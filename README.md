@@ -1,11 +1,11 @@
-# `FIDE`: Feature-based Intermittent DEmand forecasting
+# `fide`: Feature-based Intermittent DEmand forecasting
 
-`FIDE` provides a feature-based forecasting method for intermittent demand proposed by [Li Li, Yanfei Kang, Fotios Petropoulos, and Feng Li](https://arxiv.org/abs/2204.08283). The package aims to facilitate reproducing the results of our paper, and can also be applied to other intermittent demand forecasting problems. 
+`fide` provides a feature-based forecasting method for intermittent demand proposed by [Li Li, Yanfei Kang, Fotios Petropoulos, and Feng Li](https://arxiv.org/abs/2204.08283). The package aims to facilitate reproducing the results of our paper, and can also be applied to other intermittent demand forecasting problems. 
 
 ## Installation
-You can install `FIDE` from github with:
+You can install `fide` from github with:
 ```
-devtools::install_github("lily940703/FIDE")
+devtools::install_github("lily940703/fide")
 ```
 
 ## Load the package
