@@ -26,9 +26,9 @@ calculate_forec_point <- function(data, h=12){
 # seasonal Naive (sNaive), Simple Exponential Smoothing (SES), Moving Averages (MA),
 # AutoRegressive Integrated Moving Average (ARIMA), ExponenTial Smoothing (ETS),
 # and intermittent demand forecasting methods,
-# which are Croston??s method (CRO), optimized Croston??s method (optCro),
+# which are Croston's method (CRO), optimized Croston's method (optCro),
 # Syntetos-Boylan Approximation (SBA), Teunter-Syntetos-Babai (TSB),
-# Aggregate?CDisaggregate Intermittent Demand Approach (ADIDA),
+# Aggregate-Disaggregate Intermittent Demand Approach (ADIDA),
 # Intermittent Multiple Aggregation Prediction Algorithm (IMAPA).
 
 
