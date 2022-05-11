@@ -1,7 +1,7 @@
 #' Function to calculate the forecasts of intermittent demand
 #'
 #' @param data The dataset. A list including some time series.
-#' \code{$x} is the historical value, and \code{$xx} is the true value.
+#' The object \code{x} is the historical value, and \code{xx} is the true value.
 #' @param h Forecasting horizon. 12 is the default.
 #'
 #' @return \code{data} with forecasts
