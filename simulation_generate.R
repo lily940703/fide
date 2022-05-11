@@ -1,9 +1,11 @@
 # Generate simulated data
 library(tsintermittent)
+library(fide)
 IDI = c(1.00, 1.32, 2.00, 4.00)
 CV2 = c(0.25, 0.49, 1.00, 2.00)
 obs = c(84, 108, 132, 156)
 
+set.seed(202205)
 dataset_84 = c()
 for (i in 1:length(IDI)) {
   for (j in 1:length(CV2)) {
@@ -61,12 +63,12 @@ for (i in 1:4) {
     x1_new <- x1$x1[starting_period:nrow(x1)]
     lentry_test$x = x = ts(x1_new)
     lentry_test$xx = ts(dataset_simulation[[i]][j,][(len_test+1):(len_test+12)])
-    lentry_test$IDI = compute_ADI(x)
+    lentry_test$IDI = compute_IDI(x)
     lentry_test$cv2 = compute_CV2(x)
 
     lentry_train$x = ts(x[1:(length(x)-h)])
     lentry_train$xx = ts(x[(length(x)-h+1):length(x)])
-    lentry_train$IDI = compute_ADI(lentry_train$x)
+    lentry_train$IDI = compute_IDI(lentry_train$x)
     lentry_train$cv2 = compute_CV2(lentry_train$x)
 
     dataset_simulation_train[[tsid]] = list()

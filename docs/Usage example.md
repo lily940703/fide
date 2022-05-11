@@ -6,9 +6,10 @@ We name the approach based on the nine time series features as Feature- based In
 In the proposed framework, we define a suitable pool of forecasting methods for intermittent demand to
 produce forecast combinations. The pool includes traditional forecasting models, which are Naive, seasonal Naive (sNaive), Simple Exponential Smoothing (SES), Moving Averages (MA), AutoRegressive Integrated Moving Average (ARIMA), ExponenTial Smoothing (ETS), and intermittent demand forecasting methods, which are Crostons method (CRO), optimized Crostons method (optCro), Syntetos-Boylan Approximation (SBA), Teunter-Syntetos-Babai (TSB), Aggregate-Disaggregate Intermittent Demand Approach (ADIDA), and Intermittent Multiple Aggregation Prediction Algorithm (IMAPA).
 
-**We choose 20 simulated time series and construct the training set and testing set.** The simulated dataset `dataset_simulation_train` and `dataset_simulation_test` can be obtained by running [simulation_generate.R](https://github.com/lily940703/fide/blob/main/simulation_generate.R).
+To save computing time, **we choose 20 simulated time series and construct the training set and testing set.** The simulated dataset `dataset_simulation_train` and `dataset_simulation_test` can be obtained by running [simulation_generate.R](https://github.com/lily940703/fide/blob/main/simulation_generate.R).
 
 ```r
+set.seed(2022)
 id_sample = sample(c(1:length(dataset_simulation_train)), 20)
 dataset_train_example = dataset_simulation_train[id_sample]
 dataset_test_example = dataset_simulation_test[id_sample]
@@ -45,6 +46,7 @@ To estimate the optimal combination weights, we map the features or the diversit
 
 ```r
 library(M4metalearning)
+set.seed(2022)
 train_data <- create_feat_classif_problem(dataset_train_example)
 meta_model <- train_selection_ensemble(train_data$data,
                                        train_data$errors)
@@ -88,13 +90,13 @@ For bias errors, we compute two relative errors, scaled Mean Error (sME) and sca
 
 ```r
 predictions_res = summary_performance_error_intermittent(dataset_test_example)
-# Average sME: 0.234193 
-# Average sMAE: 1.435195 
-# Average sMSE: 9.300547 
-# Average MASE: 1.041296 
-# Average NOS: 6 
-# Average sMAPIS: 66.8499 
-# Average sMPIS: -21.69083
+# Average sME: -0.05665285 
+# Average sMAE: 0.9027441 
+# Average sMSE: 1.572573 
+# Average MASE: 0.7450906 
+# Average NOS: 3.8 
+# Average sMAPIS: 26.35749 
+# Average sMPIS: 4.088528
 ```
 
 ## References
