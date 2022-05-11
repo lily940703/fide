@@ -1,9 +1,18 @@
 #' Function to compute the diversity
 #'
+<<<<<<< HEAD
 #' @param data The dataset. A list including some time series, each of which has
 #' a \code{ff} object with the forecasting values based on the 12 methods
 #'
 #' @return \code{data} with the diversity of forecasts (shown in \code{features}).
+=======
+#' @param data The dataset. A list including some time series. For each time series,
+#'   \describe{
+#'   \item{ff}{The forecasting values based on the 12 methods.}
+#'   }
+#'
+#' @return \code{data} with the diversity of forecasts (\item{features}).
+>>>>>>> aed8f17f927cacdcf3670f36a7c61f1d9a850128
 compute_diversity <- function(data){
 
   h = data[[1]]$h
