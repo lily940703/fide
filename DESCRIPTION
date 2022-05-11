@@ -1,11 +1,7 @@
 Package: fide
 Title: Feature-based Intermittent DEmand forecasting
-Version: 0.0.0.9000
-Authors@R: 
-    person(given = "Li",
-           family = "Li",
-           role = "aut",
-           email = "by1908007@buaa.edu.cn")
+Version: 0.0.1
+Authors@R: person("Li", "Li", email = "by1908007@buaa.edu.cn", role = c("aut", "cre"))
 Description: This package describes a feature-based forecasting method for intermittent demand. Time series features and the diversity are all valid for the proposed forecast combination model.  
 License: GPL (>=2.0)
 Depends: R (>= 3.2.0)
