@@ -11,8 +11,8 @@
 #' Calculate the sMAPIS error
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' and \code{$ff} is the forecast values based on the 12 methods.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sMAPIS errors
 calc_errors_smapis <- function (dataset)
@@ -52,8 +52,8 @@ calc_errors_smapis <- function (dataset)
 #' Calculate the sMAE error
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' and \code{$ff} is the forecast values based on the 12 methods.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sMAE errors
 calc_errors_smae <- function (dataset)
@@ -85,8 +85,8 @@ calc_errors_smae <- function (dataset)
 #' Calculate the sME error
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' and \code{$ff} is the forecast values based on the 12 methods.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sME errors
 calc_errors_sme <- function (dataset)
@@ -118,8 +118,8 @@ calc_errors_sme <- function (dataset)
 #' Calculate the sMSE error
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' and \code{$ff} is the forecast values based on the 12 methods.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sMSE errors
 calc_errors_smse <- function (dataset)
@@ -150,8 +150,8 @@ calc_errors_smse <- function (dataset)
 #' Calculate the MASE error
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' and \code{$ff} is the forecast values based on the 12 methods.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with MASE errors
 calc_errors_mase <- function (dataset)
@@ -190,8 +190,8 @@ calc_errors_mase <- function (dataset)
 #' Calculate a compositive error considering MASE and NOS errors
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' and \code{$ff} is the forecast values based on the 12 methods.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is the forecasting values based on the 12 methods.
 #' @param a The penalty factor for NOS.
 #'
 #' @return \code{dataset} with MASE errors
@@ -234,9 +234,9 @@ calc_errors_mase_nos <- function (dataset, a=0)
 #' Calculate the forecasting errors of the proposed method
 #'
 #' @param dataset The dataset. A list including some time series.
-#' \code{$x} is the historical value, \code{$xx} is the true value,
-#' \code{$ff} is the forecasting values based on the 12 methods,
-#' and \code{$y_hat} is the combined forecast of the proposed method.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' \code{ff} is the forecasting values based on the 12 methods,
+#' and \code{y_hat} is the combined forecast of the proposed method.
 #' @param error A vector including the errors to output.
 #'
 #' @return \code{dataset} with forecasting errors.
