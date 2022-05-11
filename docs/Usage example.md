@@ -36,7 +36,7 @@ for (i in 1:length(dataset_train_example)) {
 }
 ```
 
-If use DIVIDE, **calculate the diversity vector** for each series, where the pairwise diversity values of the methods in the pool are used as time series features. Therefore, DIVIDE can be viewed as a special case of FIDE
+If use DIVIDE, we **calculate the diversity vector** for each series, where the pairwise diversity values of the methods in the pool are used as time series features. 
 ```r
 dataset_train_example = compute_diversity(dataset_train_example)
 ```
