@@ -14,7 +14,7 @@ library(M4metalearning)
 library(tsintermittent)
 ```
 ## Data
-Simulated data and a real dataset are used in this paper, please see [this page](https://github.com/lily940703/FIDE/blob/main/docs/Usage%20example.md) for details.
+Simulated data and a real dataset are used in this paper, please see [this page](https://github.com/lily940703/fide/blob/main/docs/Statement%20of%20data.md) for details.
 
 ## Usage
 An example of using the package based on simulated data is shown on [this page](https://github.com/lily940703/FIDE/blob/main/docs/Usage%20example.md).
