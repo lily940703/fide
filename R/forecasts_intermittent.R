@@ -5,6 +5,7 @@
 #' @param h Forecasting horizon. 12 is the default.
 #'
 #' @return \code{data} with forecasts
+#' @export
 calculate_forec_point <- function(data, h=12){
   methods = forec_methods_inter()
   methods_func = lapply(methods, function(method) assign(method, get(method)))
@@ -35,6 +36,7 @@ calculate_forec_point <- function(data, h=12){
 #' The methods used to calculate the forecasts of intermittent demand
 #'
 #' @return A list including the names of forecasting methods.
+#' @export
 forec_methods_inter <- function() {
   methods_list <- list("CRO_forec_inter")
   methods_list <- append(methods_list, "optCro_forec_inter")
@@ -62,6 +64,7 @@ forec_methods_inter <- function() {
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 CRO_forec_inter <- function(ts, h=12, quantile=F,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
@@ -105,6 +108,7 @@ CRO_forec_inter <- function(ts, h=12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 optCro_forec_inter <- function(ts, h=12, quantile=F,
                                u = c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995)){
   insample = ts
@@ -146,6 +150,7 @@ optCro_forec_inter <- function(ts, h=12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 sba_forec_inter <- function(ts, h=12, quantile=F,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
@@ -188,6 +193,7 @@ sba_forec_inter <- function(ts, h=12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 tsb_forec_inter <- function(ts, h=12, quantile=F,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
@@ -230,6 +236,7 @@ tsb_forec_inter <- function(ts, h=12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 adida_forec_inter <- function(ts, h=12, quantile=F,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)){
@@ -279,6 +286,7 @@ adida_forec_inter <- function(ts, h=12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 imapa_forec_inter <- function(ts, h=12, quantile=F,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)){
@@ -323,6 +331,7 @@ imapa_forec_inter <- function(ts, h=12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 naive_forec_inter <- function(ts, h = 12, quantile=F,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)) {
@@ -367,6 +376,7 @@ naive_forec_inter <- function(ts, h = 12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 snaive_forec_inter <- function(ts, h = 12, quantile=F,
                                u = c(0.005,0.025,0.165,0.25,0.5
                                      ,0.75,0.835,0.975,0.995)) {
@@ -411,6 +421,7 @@ snaive_forec_inter <- function(ts, h = 12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 ses_forec_inter <- function(ts, h = 12, quantile=F,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)) {
@@ -458,6 +469,7 @@ ses_forec_inter <- function(ts, h = 12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 ma_forec_inter <- function(ts, h = 12, k_interval = c(2:12), quantile=F,
                            u = c(0.005,0.025,0.165,0.25,0.5
                                  ,0.75,0.835,0.975,0.995)) {
@@ -510,6 +522,7 @@ ma_forec_inter <- function(ts, h = 12, k_interval = c(2:12), quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 arima_forec_inter <- function(ts, h = 12, quantile=F,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)) {
@@ -554,6 +567,7 @@ arima_forec_inter <- function(ts, h = 12, quantile=F,
 #' @param u A vector containing the quantiles to calculate for forecasting.
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
+#' @export
 ets_forec_inter <- function(ts, h = 12, quantile=F,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)) {
