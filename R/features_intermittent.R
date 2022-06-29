@@ -6,6 +6,7 @@
 #'
 #' @return \code{features_out}
 #' A matrix with one row and nine columns containing the nine features.
+#' @export
 compute_ifeatures <- function(ts, scale = TRUE,
                               features = c("IDI", "CV2", "Entropy",
                                            "Percent.zero", "Percent.beyond.sigma",
@@ -35,6 +36,7 @@ compute_ifeatures <- function(ts, scale = TRUE,
 #' @param x Time series.
 #'
 #' @return IDI.
+#' @export
 compute_IDI<- function(x){
   IDI <- mean(intervals(x))
   return(IDI)
@@ -80,6 +82,7 @@ demand <- function(x){
 #' @param x Time series.
 #'
 #' @return the value of the feature \code{Percent.zero}
+#' @export
 percent_zero <- function(x, t=0){
   num = sum(x <= t)
   return(num/length(x))
@@ -97,6 +100,7 @@ percent_zero <- function(x, t=0){
 #' @param f_agg The aggregator function (e.g. mean, var, std, median)
 #'
 #' @return the value of the feature \code{Change.quantile}
+#' @export
 
 change_quantiles <- function(x, ql, qh, isabs, f_agg){
   if (ql >= qh){
@@ -123,6 +127,7 @@ change_quantiles <- function(x, ql, qh, isabs, f_agg){
 #' @param r Filtering level, must be positive.
 #'
 #' @return the value of the feature \code{Entropy}
+#' @export
 approximate_entropy<- function(x, m, r){
   entropy = TSEntropies::ApEn(x, dim = m, r = r*sd(x))
   return (entropy)
@@ -137,6 +142,7 @@ approximate_entropy<- function(x, m, r){
 #' @param r The coefficient of \{\sigma\}, default to 1.
 #'
 #' @return the value of the feature \code{Percent.beyond.sigma}
+#' @export
 percent_beyond_sigma<- function(x, r=1){
   num = sum(abs(x - mean(x)) > r * sd(x))
   return(num/length(x))
@@ -153,6 +159,7 @@ percent_beyond_sigma<- function(x, r=1){
 #' @param chunk_len The length of the component chunks in the time series.
 #'
 #' @return the value of the feature \code{Linear.chunk.var}
+#' @export
 linear_chunk_var <- function(x, f_agg, chunk_len=10){
   num_chunk = ceiling(length(x)/chunk_len)
   aggregator = get(f_agg)
@@ -180,6 +187,7 @@ linear_chunk_var <- function(x, f_agg, chunk_len=10){
 #' @param num_segments The number of chunks in the time series.
 #'
 #' @return the value of the feature \code{Ratio.last.chunk}
+#' @export
 ratio_last_chunk<- function(x, num_segments){
   full_series_energy = sum(x^2)
   tail_focus = ceiling(length(x)/num_segments)
