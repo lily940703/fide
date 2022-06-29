@@ -15,6 +15,7 @@
 #' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sMAPIS errors
+#' @export
 calc_errors_smapis <- function (dataset)
 {
   for (i in 1:length(dataset)) {
@@ -56,6 +57,7 @@ calc_errors_smapis <- function (dataset)
 #' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sMAE errors
+#' @export
 calc_errors_smae <- function (dataset)
 {
   for (i in 1:length(dataset)) {
@@ -89,6 +91,7 @@ calc_errors_smae <- function (dataset)
 #' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sME errors
+#' @export
 calc_errors_sme <- function (dataset)
 {
   for (i in 1:length(dataset)) {
@@ -122,6 +125,7 @@ calc_errors_sme <- function (dataset)
 #' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with sMSE errors
+#' @export
 calc_errors_smse <- function (dataset)
 {
   for (i in 1:length(dataset)) {
@@ -154,6 +158,7 @@ calc_errors_smse <- function (dataset)
 #' and \code{ff} is the forecasting values based on the 12 methods.
 #'
 #' @return \code{dataset} with MASE errors
+#' @export
 calc_errors_mase <- function (dataset)
 {
   total_snaive_errors <- c(0, 0)
@@ -195,6 +200,7 @@ calc_errors_mase <- function (dataset)
 #' @param a The penalty factor for NOS.
 #'
 #' @return \code{dataset} with MASE errors
+#' @export
 calc_errors_mase_nos <- function (dataset, a=0)
 {
   for (i in 1:length(dataset)) {
@@ -240,6 +246,7 @@ calc_errors_mase_nos <- function (dataset, a=0)
 #' @param error A vector including the errors to output.
 #'
 #' @return \code{dataset} with forecasting errors.
+#' @export
 summary_performance_error_intermittent <- function(dataset
                                                    , error = c("sME"
                                                                , "sMAE"
