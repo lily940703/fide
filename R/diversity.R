@@ -4,6 +4,7 @@
 #' a \code{ff} object with the forecasting values based on the 12 methods
 #'
 #' @return \code{data} with the diversity of forecasts (shown in \code{features}).
+#' @export
 compute_diversity <- function(data){
 
   h = data[[1]]$h
