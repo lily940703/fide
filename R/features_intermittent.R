@@ -47,6 +47,7 @@ compute_IDI<- function(x){
 #' @param x Time series.
 #'
 #' @return CV2.
+#' @export
 compute_CV2<- function(x){
   D <- demand(x)
   CV2 <- (sd(D)/mean(D))^2
