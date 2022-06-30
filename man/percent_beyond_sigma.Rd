@@ -9,12 +9,12 @@ percent_beyond_sigma(x, r = 1)
 \arguments{
 \item{x}{The time series.}
 
-\item{r}{The coefficient of \{\sigma\}, default to 1.}
+\item{r}{The coefficient of "sigma", default to 1.}
 }
 \value{
 the value of the feature \code{Percent.beyond.sigma}
 }
 \description{
-The percentage of observations that are more than \{\sigma\} away from
-the mean of the time series (\{\sigma\} is the standard deviation of the time series).
+The percentage of observations that are more than "sigma" away from
+the mean of the time series ("sigma" is the standard deviation of the time series).
 }
