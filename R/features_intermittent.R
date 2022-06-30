@@ -55,6 +55,12 @@ compute_CV2<- function(x){
 }
 
 # These functions support \code{compute_IDI} and \code{compute_CV2}
+#' Computing the intervals between the positive demands.
+#'
+#' @param x Time series.
+#'
+#' @return A vector of intervals.
+#' @export
 intervals <- function(x){
   y<-c()
   k<-1

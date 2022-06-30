@@ -246,7 +246,7 @@ adida_forec_inter <- function(ts, h=12, quantile=F,
     cat("Quantiles are not defualt!")
   }
   insample = ts
-  al <- round(mean(intervals(insample)),0)
+  al <- round(mean(fide::intervals(insample)),0)
   if(al>12) al = 12
   AS <- as.numeric(na.omit(as.numeric(zoo::rollapply(tail(insample, (length(insample) %/% al)*al), al, FUN=sum, by = al))))
   ses = HoltWinters(AS, beta = F, gamma = F)
