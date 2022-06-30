@@ -112,7 +112,7 @@ CRO_forec_inter <- function(ts, h=12, quantile=F,
 optCro_forec_inter <- function(ts, h=12, quantile=F,
                                u = c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995)){
   insample = ts
-  cro_forec = tsintermittent::crost(data = insample, h=h, type="croston", cost="mar")
+  cro_forec = tsintermittent::crost(data = insample, h=h, type="croston", cost="mar", nop=2)
   fitted = cro_forec$frc.in
   point_forec = cro_forec$frc.out
   point_forec[point_forec<0] = 0
@@ -155,7 +155,7 @@ sba_forec_inter <- function(ts, h=12, quantile=F,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
   insample = ts
-  cro_forec = tsintermittent::crost(data = insample, h=h, type="sba", cost="mar")
+  cro_forec = tsintermittent::crost(data = insample, h=h, type="sba", cost="mar", nop=2)
   fitted = cro_forec$frc.in
   point_forec = cro_forec$frc.out
   point_forec[point_forec<0] = 0
