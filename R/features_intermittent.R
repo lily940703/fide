@@ -142,11 +142,11 @@ approximate_entropy<- function(x, m, r){
 
 #' Compute the feature \code{Percent.beyond.sigma} of the time series
 #'
-#' The percentage of observations that are more than \{\sigma\} away from
-#' the mean of the time series (\{\sigma\} is the standard deviation of the time series).
+#' The percentage of observations that are more than "sigma" away from
+#' the mean of the time series ("sigma" is the standard deviation of the time series).
 #'
 #' @param x The time series.
-#' @param r The coefficient of \{\sigma\}, default to 1.
+#' @param r The coefficient of "sigma", default to 1.
 #'
 #' @return the value of the feature \code{Percent.beyond.sigma}
 #' @export
