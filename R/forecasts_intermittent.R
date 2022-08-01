@@ -6,16 +6,30 @@
 #'
 #' @return \code{data} with forecasts
 #' @export
-calculate_forec_point <- function(data, h=12){
+calculate_forec_point <- function(data, h=12, quantile = F,
+                                  u = c(0.005,0.025,0.165,0.25,0.5
+                                        ,0.75,0.835,0.975,0.995)
+                                  ){
   methods = forec_methods_inter()
   methods_func = lapply(methods, function(method) assign(method, get(method)))
-  forec = lapply(methods_func, function(func) func(ts=data$x, h = h))
+  forec = lapply(methods_func, function(func) func(ts=data$x, h = h, quantile = quantile))
 
   # Point forecasts
   ff = t(sapply(forec, function(x) x$point_forec))
   names = unlist(methods)
   rownames(ff) = names
   data$ff = ff
+
+  # Quantile forecasts
+  if(quantile == T){
+    for (i in 1:(ncol(forec[[1]])-1)) {
+      quantile_forec = t(sapply(forec, function(x) x[,i+1]))
+      rownames(quantile_forec) = names
+      quantile_forec_name = paste0("quantile_forec_",u[i])
+      data[[length(data)+1]] = quantile_forec
+      names(data)[length(data)] = quantile_forec_name
+      }
+  }
 
   return(data)
 }
@@ -65,7 +79,7 @@ forec_methods_inter <- function() {
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-CRO_forec_inter <- function(ts, h=12, quantile=F,
+CRO_forec_inter <- function(ts, h=12, quantile,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
   insample = ts
@@ -109,7 +123,7 @@ CRO_forec_inter <- function(ts, h=12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-optCro_forec_inter <- function(ts, h=12, quantile=F,
+optCro_forec_inter <- function(ts, h=12, quantile,
                                u = c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995)){
   insample = ts
   cro_forec = tsintermittent::crost(data = insample, h=h, type="croston", cost="mar", nop=2)
@@ -151,7 +165,7 @@ optCro_forec_inter <- function(ts, h=12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-sba_forec_inter <- function(ts, h=12, quantile=F,
+sba_forec_inter <- function(ts, h=12, quantile,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
   insample = ts
@@ -194,7 +208,7 @@ sba_forec_inter <- function(ts, h=12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-tsb_forec_inter <- function(ts, h=12, quantile=F,
+tsb_forec_inter <- function(ts, h=12, quantile,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)){
   insample = ts
@@ -237,7 +251,7 @@ tsb_forec_inter <- function(ts, h=12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-adida_forec_inter <- function(ts, h=12, quantile=F,
+adida_forec_inter <- function(ts, h=12, quantile,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)){
   if(sum(u == c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995))==length(u)){
@@ -287,7 +301,7 @@ adida_forec_inter <- function(ts, h=12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-imapa_forec_inter <- function(ts, h=12, quantile=F,
+imapa_forec_inter <- function(ts, h=12, quantile,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)){
   insample = ts
@@ -332,7 +346,7 @@ imapa_forec_inter <- function(ts, h=12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-naive_forec_inter <- function(ts, h = 12, quantile=F,
+naive_forec_inter <- function(ts, h = 12, quantile,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)) {
   if(sum(u == c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995))==length(u)){
@@ -377,7 +391,7 @@ naive_forec_inter <- function(ts, h = 12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-snaive_forec_inter <- function(ts, h = 12, quantile=F,
+snaive_forec_inter <- function(ts, h = 12, quantile,
                                u = c(0.005,0.025,0.165,0.25,0.5
                                      ,0.75,0.835,0.975,0.995)) {
   if(sum(u == c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995))==length(u)){
@@ -422,7 +436,7 @@ snaive_forec_inter <- function(ts, h = 12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-ses_forec_inter <- function(ts, h = 12, quantile=F,
+ses_forec_inter <- function(ts, h = 12, quantile,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)) {
   if(sum(u == c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995))==length(u)){
@@ -470,7 +484,7 @@ ses_forec_inter <- function(ts, h = 12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-ma_forec_inter <- function(ts, h = 12, k_interval = c(2:12), quantile=F,
+ma_forec_inter <- function(ts, h = 12, k_interval = c(2:12), quantile,
                            u = c(0.005,0.025,0.165,0.25,0.5
                                  ,0.75,0.835,0.975,0.995)) {
   # Find the optimal k
@@ -523,7 +537,7 @@ ma_forec_inter <- function(ts, h = 12, k_interval = c(2:12), quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-arima_forec_inter <- function(ts, h = 12, quantile=F,
+arima_forec_inter <- function(ts, h = 12, quantile,
                               u = c(0.005,0.025,0.165,0.25,0.5
                                     ,0.75,0.835,0.975,0.995)) {
   if(sum(u == c(0.005,0.025,0.165,0.25,0.5,0.75,0.835,0.975,0.995))==length(u)){
@@ -568,7 +582,7 @@ arima_forec_inter <- function(ts, h = 12, quantile=F,
 #'
 #' @return A \code{data.frame} with point forecasts and quantile forecasts.
 #' @export
-ets_forec_inter <- function(ts, h = 12, quantile=F,
+ets_forec_inter <- function(ts, h = 12, quantile,
                             u = c(0.005,0.025,0.165,0.25,0.5
                                   ,0.75,0.835,0.975,0.995)) {
 
