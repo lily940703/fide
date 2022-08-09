@@ -22,7 +22,7 @@ compute_ifeatures <- function(ts, scale = TRUE,
     ts = scale(ts)
   }
   f4 = percent_zero(ts, t=0)
-  f7 = change_quantiles(ts, ql=0.4, qh=1, isabs=T, f_agg="mean")
+  f7 = change_quantiles(ts, ql=0.75, qh=1, isabs=T, f_agg="mean")
   f3 = approximate_entropy(ts, m=2, r=0.5)
   f5 = percent_beyond_sigma(ts, r=1)
   f6 = linear_chunk_var(ts, f_agg="var", chunk_len=12)
