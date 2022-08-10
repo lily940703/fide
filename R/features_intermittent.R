@@ -11,7 +11,9 @@ compute_ifeatures <- function(ts, scale = TRUE,
                               features = c("IDI", "CV2", "Entropy",
                                            "Percent.zero", "Percent.beyond.sigma",
                                            "Linear.chunk.var", "change_mean_abs",
-                                           "Ratio.last.chunk", "Percent.zero.end")){
+                                           "Ratio.last.chunk", "Percent.zero.end"),
+                              chunk_len = 12,
+                              num_segments = 4){
   features_out = matrix(nrow = 1, ncol = length(features))
   colnames(features_out) = features
   f1 = compute_IDI(ts)
@@ -25,8 +27,8 @@ compute_ifeatures <- function(ts, scale = TRUE,
   f7 = change_mean_abs(ts, isabs=T, f_agg="mean")
   f3 = approximate_entropy(ts, m=2, r=0.5)
   f5 = percent_beyond_sigma(ts, r=1)
-  f6 = linear_chunk_var(ts, f_agg="var", chunk_len=12)
-  f8 = ratio_last_chunk(ts, num_segments = 4)
+  f6 = linear_chunk_var(ts, f_agg="var", chunk_len=chunk_len)
+  f8 = ratio_last_chunk(ts, num_segments = num_segments)
   features_out[1,]=c(f1,f2,f3,f4,f5,f6,f7,f8,f9)
   return(features_out)
 }
