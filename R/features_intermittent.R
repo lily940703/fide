@@ -10,7 +10,7 @@
 compute_ifeatures <- function(ts, scale = TRUE,
                               features = c("IDI", "CV2", "Entropy",
                                            "Percent.zero", "Percent.beyond.sigma",
-                                           "Linear.chunk.var", "Change.quantile",
+                                           "Linear.chunk.var", "change_mean_abs",
                                            "Ratio.last.chunk", "Percent.zero.end")){
   features_out = matrix(nrow = 1, ncol = length(features))
   colnames(features_out) = features
@@ -22,7 +22,7 @@ compute_ifeatures <- function(ts, scale = TRUE,
     ts = scale(ts)
   }
   f4 = percent_zero(ts, t=0)
-  f7 = change_quantiles(ts, ql=0.75, qh=1, isabs=T, f_agg="mean")
+  f7 = change_mean_abs(ts, isabs=T, f_agg="mean")
   f3 = approximate_entropy(ts, m=2, r=0.5)
   f5 = percent_beyond_sigma(ts, r=1)
   f6 = linear_chunk_var(ts, f_agg="var", chunk_len=12)
@@ -124,6 +124,16 @@ change_quantiles <- function(x, ql, qh, isabs, f_agg){
   aggregator = get(f_agg)
   return(aggregator(div[ind]))
 }
+
+change_mean_abs <- function(x, isabs, f_agg){
+  div = diff(x)
+  if (isabs) {
+    div = abs(div)
+  }
+  aggregator = get(f_agg)
+  return(aggregator(div))
+}
+
 
 #' Compute the entropy of the time series
 #'
