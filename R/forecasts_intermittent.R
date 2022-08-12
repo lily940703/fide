@@ -11,6 +11,7 @@ calculate_forec_point <- function(data, h=12, quantile = F,
                                         ,0.75,0.835,0.975,0.995)
                                   ){
   methods = forec_methods_inter()
+ # methods = forec_methods_inter()[1:10]
   methods_func = lapply(methods, function(method) assign(method, get(method)))
   forec = lapply(methods_func, function(func) func(ts=data$x, h = h, quantile = quantile))
 
