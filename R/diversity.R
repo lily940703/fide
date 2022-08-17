@@ -7,7 +7,7 @@
 #' @export
 compute_diversity <- function(data){
 
-  h = data[[1]]$h
+  h = dim(data[[1]]$ff)[2]
   n = dim(data[[1]]$ff)[1]
 
   for (i in 1:length(data)) {
