@@ -20,15 +20,17 @@ compute_ifeatures <- function(ts, scale = TRUE,
   f2 = compute_CV2(ts)
   rle <- rle(as.vector(ts))
   f9 = if(rle$values[length(rle$values)] != 0) 0 else rle$lengths[length(rle$lengths)]/length(ts)
+  f4 = percent_zero(ts, t=0)
+  f5 = percent_beyond_sigma(ts, r=1)
+  f8 = ratio_last_chunk(ts, num_segments = num_segments)
+
   if(scale){
     ts = scale(ts)
   }
-  f4 = percent_zero(ts, t=0)
+
   f7 = change_mean_abs(ts, isabs=T, f_agg="mean")
   f3 = approximate_entropy(ts, m=2, r=0.5)
-  f5 = percent_beyond_sigma(ts, r=1)
   f6 = linear_chunk_var(ts, f_agg="var", chunk_len=chunk_len)
-  f8 = ratio_last_chunk(ts, num_segments = num_segments)
   features_out[1,]=c(f1,f2,f3,f4,f5,f6,f7,f8,f9)
   return(features_out)
 }
