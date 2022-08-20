@@ -14,8 +14,7 @@ compute_ifeatures <- function(ts, scale = TRUE,
                                            "Ratio.last.chunk", "Percent.zero.end"),
                               chunk_len = 12,
                               num_segments = 4){
-  features_out = matrix(nrow = 1, ncol = length(features))
-  colnames(features_out) = features
+
   f1 = compute_IDI(ts)
   f2 = compute_CV2(ts)
   rle <- rle(as.vector(ts))
@@ -31,7 +30,8 @@ compute_ifeatures <- function(ts, scale = TRUE,
   f7 = change_mean_abs(ts, isabs=T, f_agg="mean")
   f3 = approximate_entropy(ts, m=2, r=0.5)
   f6 = linear_chunk_var(ts, f_agg="var", chunk_len=chunk_len)
-  features_out[1,]=c(f1,f2,f3,f4,f5,f6,f7,f8,f9)
+  features_out=c(f1,f2,f3,f4,f5,f6,f7,f8,f9)
+  names(features_out) = features
   return(features_out)
 }
 
