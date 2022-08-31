@@ -16,18 +16,18 @@ dataset_test_example = dataset_simulation_test[id_sample]
 ```
 
 ## Model training 
- In FIDE, we compute the features selected for intermittent demand and learn the relationship between the features and combination weights. In DIVIDE, the combination model can be obtained based on the diversity of different forecast methods, where the pairwise diversity values of the methods in the pool are used as time series features. Therefore, DIVIDE can be viewed as a special case of FIDE.
 
-In the training phase, we **generate forecasts** based on the methods in the intermittent demand forecasting pool.
+In the training phase, we **generate forecasts** based on the methods in the intermittent demand forecasting pool. 
 ```r
 for (i in 1:length(dataset_train_example)) {
-  dataset_train_example[[i]] = calculate_forec_point(dataset_train_example[[i]])
+  dataset_train_example[[i]] = calculate_forec_point(dataset_train_example[[i]],
+                                                     h = 12, quantile = F)
 }
 ```
 
-Then we **calculate errors** of different methods required in the objective function (MASE for example).
+Then we **calculate errors** of different methods required in the objective function (RMSSE for example).
 ```r
-dataset_train_example = calc_errors_mase(dataset_train_example)
+dataset_train_example = calc_errors_rmsse(dataset_train_example)
 ```
 
 If use FIDE, we **compute the features** selected for intermittent demand.
@@ -53,12 +53,12 @@ meta_model <- train_selection_ensemble(train_data$data,
 ```                                       
                                       
 ## Forecasting
-In the forecasting phase, we calculate the features or the diversity for the new time series, and get the combination weights through the pre-trained XGBoost model. Finally, we utilize the optimal weights to average the point forecasts from different methods in the pool and achieve the combined forecast results.
 
 In the forecasting phase, we **forecast** with the nine methods in the pool.
 ```r
 for (i in 1:length(dataset_test_example)) {
-  dataset_test_example[[i]] = calculate_forec_point(dataset_test_example[[i]])
+  dataset_test_example[[i]] = calculate_forec_point(dataset_test_example[[i]],
+                                                     h = 12, quantile = F)
 }
 ```
 
@@ -84,20 +84,14 @@ Finally, we utilize the optimal weights to average the point forecasts from diff
 dataset_test_example <- ensemble_forecast(preds, dataset_test_example)
 ```
 
-
-In `FIDE`, we consider a series of forecasting errors to evaluate the performance of the proposed method. For traditional errors, we calculate two absolute errors scaled Mean Absolute Error (sMAE) and  Mean Absolute Scaled Error (MASE), a squared error scaled Mean Squared Error (sMSE), and a cumulated error scaled Mean Absolute Periods In Stock (sMAPIS).
-For bias errors, we compute two relative errors, scaled Mean Error (sME) and scaled Mean Periods In Stock (sMPIS), and a shortage-based error Number Of Shortages (NOS). We output the averaged errors of the proposed FIDE based on the 20 simulated time series.
+We output the averaged RMSSE of the proposed FIDE based on the 20 simulated time series.
 
 ```r
-predictions_res = summary_performance_error_intermittent(dataset_test_example)
-# Average sME: -0.05665285 
-# Average sMAE: 0.9027441 
-# Average sMSE: 1.572573 
-# Average MASE: 0.7450906 
-# Average NOS: 3.8 
-# Average sMAPIS: 26.35749 
-# Average sMPIS: 4.088528
+predictions_res = summary_performance_rmsse(dataset_test_example)
+# Average RMSSE: 0.6399209  
 ```
+
+If we also need quantile forecasts, set `quantile = T` in function `calculate_forec_point`, and change the error measure to SPL by using `calc_errors_spl` . Moreover, please utilize function `ensemble_forecast_quantile` to combine quantile forecasts based on the obtained weights. Finally, function `summary_performance_spl` can output the overall performance measured by SPL.
 
 ## References
 - Li, Li, [Yanfei Kang](https://yanfei.site), [Fotios Petropoulos](https://researchportal.bath.ac.uk/en/persons/fotios-petropoulos), and [Feng Li](http://feng.li/). 2022. "Feature-based Intermittent Demand Forecast Combinations: Bias, Accuracy and Inventory Implications." [*_Working Paper_*](https://arxiv.org/abs/2204.08283). 
