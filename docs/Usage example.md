@@ -94,4 +94,4 @@ predictions_res = summary_performance_rmsse(dataset_test_example)
 If we also need quantile forecasts, set `quantile = T` in function `calculate_forec_point`, and change the error measure to SPL by using `calc_errors_spl` . Moreover, please utilize function `ensemble_forecast_quantile` to combine quantile forecasts based on the obtained weights. Finally, function `summary_performance_spl` can output the overall performance measured by SPL.
 
 ## References
-- Li, Li, [Yanfei Kang](https://yanfei.site), [Fotios Petropoulos](https://researchportal.bath.ac.uk/en/persons/fotios-petropoulos), and [Feng Li](http://feng.li/). 2022. "Feature-based Intermittent Demand Forecast Combinations: Bias, Accuracy and Inventory Implications." [*_Working Paper_*](https://arxiv.org/abs/2204.08283). 
+- Li, Li, [Yanfei Kang](https://yanfei.site), [Fotios Petropoulos](https://researchportal.bath.ac.uk/en/persons/fotios-petropoulos), and [Feng Li](http://feng.li/). 2022. "Feature-based Intermittent Demand Forecast Combinations: Accuracy and Inventory Implications." [*_Working Paper_*](https://arxiv.org/abs/2204.08283). 
