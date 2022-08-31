@@ -4,13 +4,22 @@
 \alias{calculate_forec_point}
 \title{Function to calculate the forecasts of intermittent demand}
 \usage{
-calculate_forec_point(data, h = 12)
+calculate_forec_point(
+  data,
+  h = 12,
+  quantile = F,
+  u = c(0.005, 0.025, 0.165, 0.25, 0.5, 0.75, 0.835, 0.975, 0.995)
+)
 }
 \arguments{
 \item{data}{The dataset. A list including some time series.
 The object \code{x} is the historical value, and \code{xx} is the true value.}
 
 \item{h}{Forecasting horizon. 12 is the default.}
+
+\item{quantile}{Logical value. If quantile is TRUE, quantile forecasts are calculated.}
+
+\item{u}{The quantile.}
 }
 \value{
 \code{data} with forecasts

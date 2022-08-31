@@ -8,7 +8,9 @@ compute_ifeatures(
   ts,
   scale = TRUE,
   features = c("IDI", "CV2", "Entropy", "Percent.zero", "Percent.beyond.sigma",
-    "Linear.chunk.var", "Change.quantile", "Ratio.last.chunk", "Percent.zero.end")
+    "Linear.chunk.var", "change_mean_abs", "Ratio.last.chunk", "Percent.zero.end"),
+  chunk_len = 12,
+  num_segments = 4
 )
 }
 \arguments{

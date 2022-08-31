@@ -8,7 +8,7 @@ ma_forec_inter(
   ts,
   h = 12,
   k_interval = c(2:12),
-  quantile = F,
+  quantile,
   u = c(0.005, 0.025, 0.165, 0.25, 0.5, 0.75, 0.835, 0.975, 0.995)
 )
 }
