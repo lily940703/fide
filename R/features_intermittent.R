@@ -99,37 +99,47 @@ percent_zero <- function(x, t=0){
   return(num/length(x))
 }
 
-#' Compute the feature \code{Change.quantile} of the time series
+#' #' Compute the feature \code{Change.quantile} of the time series
+#' #'
+#' #' The average, absolute value of consecutive changes of the series
+#' #' inside a fixed range given by the quantiles.
+#' #'
+#' #' @param x The time series.
+#' #' @param ql The lower quantile of the range.
+#' #' @param qh The higher quantile of the range.
+#' #' @param isabs Logical value. Should the absolute differences be taken?
+#' #' @param f_agg The aggregator function (e.g. mean, var, std, median)
+#' #'
+#' #' @return the value of the feature \code{Change.quantile}
+#' #' @export
+#'
+#' change_quantiles <- function(x, ql, qh, isabs, f_agg){
+#'   if (ql >= qh){
+#'     return(0)
+#'   }
+#'   div = diff(x)
+#'   if (isabs) {
+#'     div = abs(div)
+#'   }
+#'   bin_cat = quantile(x, probs = c(ql, qh))
+#'   bin_cat_0 = x>=bin_cat[1] & x<=bin_cat[2]
+#'   bin_cat_0_roll_1 = c(bin_cat_0[length(bin_cat_0)], bin_cat_0[-length(bin_cat_0)])
+#'   ind = c(bin_cat_0 & bin_cat_0_roll_1)[-1]
+#'   aggregator = get(f_agg)
+#'   return(aggregator(div[ind]))
+#' }
+
+#' Compute the feature \code{Change.mean.abs} of the time series
 #'
 #' The average, absolute value of consecutive changes of the series
-#' inside a fixed range given by the quantiles.
 #'
 #' @param x The time series.
-#' @param ql The lower quantile of the range.
-#' @param qh The higher quantile of the range.
 #' @param isabs Logical value. Should the absolute differences be taken?
 #' @param f_agg The aggregator function (e.g. mean, var, std, median)
 #'
-#' @return the value of the feature \code{Change.quantile}
+#' @return the value of the feature \code{Change.mean.abs}
 #' @export
-
-change_quantiles <- function(x, ql, qh, isabs, f_agg){
-  if (ql >= qh){
-    return(0)
-  }
-  div = diff(x)
-  if (isabs) {
-    div = abs(div)
-  }
-  bin_cat = quantile(x, probs = c(ql, qh))
-  bin_cat_0 = x>=bin_cat[1] & x<=bin_cat[2]
-  bin_cat_0_roll_1 = c(bin_cat_0[length(bin_cat_0)], bin_cat_0[-length(bin_cat_0)])
-  ind = c(bin_cat_0 & bin_cat_0_roll_1)[-1]
-  aggregator = get(f_agg)
-  return(aggregator(div[ind]))
-}
-
-change_mean_abs <- function(x, isabs, f_agg){
+change_mean_abs <- function(x, isabs=T, f_agg="mean"){
   div = diff(x)
   if (isabs) {
     div = abs(div)
