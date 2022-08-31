@@ -1,3 +1,175 @@
+# We use Root Mean Squared Scaled Error (RMSSE) to measure the results of point forecasts
+# and Scaled Pinball Loss (SPL) to evaluate quantile forecasts.
+
+#------------- RMSSE --------------#
+
+#' Calculate RMSSE errors of the given point forecasts
+#'
+#' @param dataset The dataset. A list including some time series.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{ff} is point forecasts based on a series forecasting methods.
+#'
+#' @return \code{dataset} with RMSSE errors
+#' @export
+calc_errors_rmsse <- function (dataset)
+{
+  for (i in 1:length(dataset)) {
+    tryCatch({
+      lentry <- dataset[[i]]
+      insample <- lentry$x
+      ff <- lentry$ff
+      insample <- as.numeric(insample)
+      outsample <- as.numeric(lentry$xx)
+      repoutsample <- matrix(rep(outsample, each = nrow(ff)),
+                             nrow = nrow(ff))
+
+      masep <- mean((utils::head(insample, -1) - utils::tail(insample, -1))^2)
+      se_err <- (ff - repoutsample)^2
+      lentry$errors <- sqrt(rowMeans(se_err)/masep)
+      dataset[[i]] <- lentry
+    }, error = function(e) {
+      print(paste("Error when processing RMSSE in series: ",
+                  i))
+      print(e)
+      e
+    })
+  }
+  dataset
+}
+
+#' Calculate the RMSSE error of the proposed method
+#'
+#' @param dataset The dataset. A list including some time series.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{y_hat} is the combined point forecast of the proposed method.
+#'
+#' @return The average RMSSE error of all time series.
+#' @export
+summary_performance_rmsse <- function (dataset)
+{
+  rmsse_err_all=0
+  for (i in 1:length(dataset)) {
+    lentry <- dataset[[i]]
+    insample <- lentry$x
+    ff <- as.numeric(lentry$y_hat)
+    insample <- as.numeric(insample)
+    outsample <- as.numeric(lentry$xx)
+    masep <- mean((utils::head(insample, -1) - utils::tail(insample, -1))^2)
+    rmsse_err <- sqrt((mean((ff - outsample)^2))/masep)
+    rmsse_err_all = rmsse_err_all+rmsse_err
+  }
+  n = length(dataset)
+  cat("Average RMSSE:", rmsse_err_all/n, "\n")
+}
+
+#------------- SPL --------------#
+
+#' Calculate SPL errors of the given quantile forecasts
+#'
+#' @param dataset The dataset. A list including some time series.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{quantile_forec} is the quantile forecasts based on a series forecasting methods.
+#' @param u The quantile.
+#' Four high quantiles are considered, i.e. 0.750, 0.835, 0.975, and 0.995.
+#'
+#' @return \code{dataset} with SPL errors
+#' @export
+calc_errors_spl <- function (dataset, u = 0.995)
+{
+  for (i in 1:length(dataset)) {
+    tryCatch({
+      lentry <- dataset[[i]]
+      insample <- lentry$x
+
+      name_data = names(dataset[[i]])
+      if(u==0.995){
+        quantile = dataset[[i]]$quantile_forec_0.995
+      }else if(u==0.975){
+        quantile = dataset[[i]]$quantile_forec_0.975
+      }else if(u==0.835){
+        quantile = dataset[[i]]$quantile_forec_0.835
+      }else if(u==0.75){
+        quantile = dataset[[i]]$quantile_forec_0.75
+      }
+
+      insample <- as.numeric(insample)
+      outsample <- as.numeric(lentry$xx)
+      scale_spl <- mean(abs(insample[-1] - insample[-length(insample)]))
+      repoutsample <- matrix(rep(outsample, each = nrow(quantile)),
+                             nrow = nrow(quantile))
+
+      # SPL
+
+      spl = rowMeans(u*(repoutsample-quantile)*(repoutsample>=quantile)
+                     +(1-u)*(quantile-repoutsample)*(repoutsample<quantile))
+
+
+      lentry$errors = spl/scale_spl
+
+      dataset[[i]] = lentry
+    }, error = function(e) {
+      print(paste("Error when processing SPL in series: ",
+                  i))
+      print(e)
+      e
+    })
+  }
+  dataset
+}
+
+
+#' Calculate the SPL error of the proposed method
+#'
+#' @param dataset The dataset. A list including some time series.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{y_hat} is the combined quantile forecast of the proposed method.
+#' @param u The quantile.
+#' Four high quantiles are considered, i.e. 0.750, 0.835, 0.975, and 0.995.
+#'
+#' @return The average SPL error of all time series.
+#' @export
+summary_performance_spl <- function (dataset, u=0.995)
+{
+  spl_err_all=0
+  for (i in 1:length(dataset)) {
+
+    lentry <- dataset[[i]]
+    insample <- lentry$x
+
+    if(u==0.995){
+      quantile = dataset[[i]]$y_hat_0.995
+    }else if(u==0.975){
+      quantile = dataset[[i]]$y_hat_0.975
+    }else if(u==0.835){
+      quantile = dataset[[i]]$y_hat_0.835
+    }else if(u==0.75){
+      quantile = dataset[[i]]$y_hat_0.75
+    }
+
+    insample <- as.numeric(insample)
+    outsample <- as.numeric(lentry$xx)
+    scale_spl <- mean(abs(insample[-1] - insample[-length(insample)]))
+    # SPL
+    spl = mean(u*(outsample-quantile)*(outsample>=quantile)
+               +(1-u)*(quantile-outsample)*(outsample<quantile))
+
+    spl_err = spl/scale_spl
+    spl_err_all = spl_err_all+spl_err
+  }
+  n = length(dataset)
+  cat("Average SPL:", spl_err_all/n, "\n")
+}
+
+
+
+
+
+
+
+
+
+
+
 #-------------------- Functions to calculate errors --------------------------#
 # For traditional errors, we calculate two absolute errors
 # scaled Mean Absolute Error (sMAE) and  Mean Absolute Scaled Error (MASE),

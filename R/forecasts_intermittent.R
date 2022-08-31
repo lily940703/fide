@@ -3,6 +3,8 @@
 #' @param data The dataset. A list including some time series.
 #' The object \code{x} is the historical value, and \code{xx} is the true value.
 #' @param h Forecasting horizon. 12 is the default.
+#' @param quantile Logical value. If quantile is TRUE, quantile forecasts are calculated.
+#' @param u The quantile.
 #'
 #' @return \code{data} with forecasts
 #' @export
@@ -11,7 +13,6 @@ calculate_forec_point <- function(data, h=12, quantile = F,
                                         ,0.75,0.835,0.975,0.995)
                                   ){
   methods = forec_methods_inter()
- # methods = forec_methods_inter()[1:10]
   methods_func = lapply(methods, function(method) assign(method, get(method)))
   forec = lapply(methods_func, function(func) func(ts=data$x, h = h, quantile = quantile))
 
@@ -445,8 +446,9 @@ ses_forec_inter <- function(ts, h = 12, quantile,
   }else{
     cat("Quantiles are not defualt!")
   }
-  ses = HoltWinters(ts, beta = F, gamma = F)
-  fore = forecast::forecast(ses, h = h, level = level)
+  # ses = HoltWinters(ts, beta = F, gamma = F)
+  # fore = forecast::forecast(ses, h = h, level = level)
+  fore = forecast::ses(ts,  h = h, level = level)
   point_forec = fore$mean
   point_forec[point_forec<0] = 0
 
@@ -618,4 +620,38 @@ ets_forec_inter <- function(ts, h = 12, quantile,
   }
 
   return(out)
+}
+
+
+#' Calculate the combined quantile forecast
+#'
+#' @param predictions The combination weights for each time series,
+#' obtained from \code{M4metalearning::predict_selection_ensemble}.
+#' @param dataset The dataset. A list including some time series.
+#' In each time series, \code{x} is the historical value, \code{xx} is the true value,
+#' and \code{quantile_forec} is the quantile forecasts based on a series forecasting methods.
+#' @param u The quantile.
+#' Four high quantiles are considered, i.e. 0.750, 0.835, 0.975, and 0.995.
+#'
+#' @return \code{dataset} with combined quantile forecast.
+#' @export
+ensemble_forecast_quantile <- function (predictions, dataset, u=0.995)
+{
+  for (i in 1:length(dataset)) {
+    if(u==0.995){
+      quantile = dataset[[i]]$quantile_forec_0.995
+    }else if(u==0.975){
+      quantile = dataset[[i]]$quantile_forec_0.975
+    }else if(u==0.835){
+      quantile = dataset[[i]]$quantile_forec_0.835
+    }else if(u==0.75){
+      quantile = dataset[[i]]$quantile_forec_0.75
+    }
+
+    weighted_quantile_forec = as.vector(t(predictions[i, ]) %*% quantile)
+    fore_name = paste0("y_hat_",u)
+    dataset[[i]][[length(dataset[[i]])+1]] = weighted_quantile_forec
+    names(dataset[[i]])[length(dataset[[i]])] = fore_name
+  }
+  dataset
 }
